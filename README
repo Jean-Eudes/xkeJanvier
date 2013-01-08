@@ -1,0 +1,69 @@
+L'idée de ce XKE est de créer une petite application de gestion de factures. L'application existante possède un système
+évolué de gestion de clients et d'articles.
+
+L'entreprise Y décide d'internaliser la gestion de ces factures, et vous en confie le développement. Le client
+attache beaucoup d'importance au pratique de développement moderne, pair programming et test (unitaire et intégration).
+
+Votre PO a décidé de découper cet epic en 3 story.
+
+Story 1 :
+
+Permettre de créer et de modifier une facture. Une facture possède un numéro de facture, un Client, une date de facture
+et une liste de ligne.
+
+La date doit être stocké sans information d'heures (juste jour, mois, années).
+Chaque ligne de factures doit contenir un numéro de ligne, une référence à un article et une quantité.
+
+La ligne de facture doit également contenir le montant (quantité * montant de l'article), mais pour des raisons
+économiques ne souhaite pas le stocker en base de données.
+
+La facture doit avoir un montant mais non stocké dans la base de données.
+
+Rq: Pas de taxe pour cet entreprise, pas de monnaie.
+
+Le client souhaite également pouvoir rechercher ces factures selon deux critères: le numéro de facture et le code du
+client.
+
+Il doit être possible de récuperer les factures enregistrés pour les modifier, en autre rajouter et supprimer des lignes.
+
+Le DSI du client souhaite utilisé le framework Hibernate via la spécification JPA 2 pour gérer la persitence des données.
+
+
+Story 2 :
+
+Les factures possèdent des mentions obligatoires. Le numéro de facture et le client sont obligatoires. La facture doit
+également contenir au moins une ligne.
+Le montant de la facure doit être positif.
+
+LE DSI veut utiliser les annotations bean validation pour valider les mentions.
+
+
+Story 3 :
+
+Les factures sont modifiés plusieurs fois avant d'être envoyé à leurs destinataires. Afin de tracer les modifications,
+nous souhaitons auditer les différentes versions de nos factures.
+
+Le client souhaite également un service lui permettant de récupérer les différentes version des factures.
+
+Le DSI a vu que hibernate possède une librairie Envers qui lui permet de gérer celà automatiquement. Celà est surement
+un choix judicieux.
+
+----------------------------------------------------------------------------
+
+Conseil :
+
+Les requêtes SQL apparaissent dans la console, il est en général intéressant de voir se que hibernate génère.
+L'annotation OneToMany possède un attribut fetch, essayer les deux valeurs et choisissez la plus opportune.
+Il est possible en JPA de déclarer des listener au moment de la sauvegarder, de la mise à jour, ...
+Envers sauvegarde les donnees dans les tables d'audit a la fin de la transaction, pour créer les factures, il faut donc
+passer par InvoiceService pour avoir une transaction commite.
+
+Lien utile :
+JPA : http://deptinfo.unice.fr/~grin/mescours/minfo/modpersobj/supports/jpa2-1-6.pdf
+      http://docs.oracle.com/javaee/6/api/javax/persistence/package-summary.html
+
+hibernate validator :
+      http://springinpractice.com/2009/02/02/getting-started-with-hibernate-validator/
+
+Envers :
+      http://docs.jboss.org/hibernate/orm/4.1/devguide/en-US/html_single/#d5e3937
