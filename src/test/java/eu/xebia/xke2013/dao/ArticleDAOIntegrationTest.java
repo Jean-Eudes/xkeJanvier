@@ -1,7 +1,6 @@
 package eu.xebia.xke2013.dao;
 
 import eu.xebia.xke2013.model.Article;
-import eu.xebia.xke2013.services.ArticleService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.math.BigDecimal;
 
 import static org.junit.Assert.assertEquals;
@@ -25,12 +22,6 @@ public class ArticleDAOIntegrationTest {
     @Autowired
     private ArticleDAO articleDAO;
 
-    @Autowired
-    private ArticleService articleService;
-
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Test
     public void should_save_article() {
 
@@ -41,7 +32,7 @@ public class ArticleDAOIntegrationTest {
         article.setAmount(new BigDecimal("120.5"));
 
         //When
-        articleService.saveArticle(article);
+        articleDAO.saveArticle(article);
 
         //Then
         assertNotNull(article.getId());
