@@ -1,14 +1,11 @@
 package eu.xebia.xke2013.model;
 
 
-import org.hibernate.envers.Audited;
-
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
 @Table(name = "ARTICLE")
-@Audited
 public class Article {
 
     @Id
